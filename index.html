@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible"
+        content="IE=edge">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <title>Proyek Akhir - Kalkulator</title>
+    <!-- style-external -->
+    <link rel="stylesheet"
+        href="style.css">
+    <!-- font-google -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Sora:wght@700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <section class="calc">
+        <div class="calc__wrapper">
+            <div class="calc__wrapper__2">
+                <div class="calc__wrapper__3">
+                    <input class="calc__input"
+                        value="0"
+                        readonly
+                        id="output" />
+                    <div class="calc__wrapper__btn">
+                        <div class="calc__row">
+                            <input class="calc__btn calc__btn__top__left__rounded"
+                                type="button"
+                                value="C"
+                                id='clears' />
+                            <input class="calc__btn"
+                                type="button"
+                                value="%"
+                                id="percent" />
+                            <input class="calc__btn"
+                                type="button"
+                                value="+/-"
+                                id="plusMinus" />
+                            <input class="calc__btn calc__btn__top__right__rounded operand"
+                                type="button"
+                                value="X" />
+                        </div>
+                        <div class="calc__row">
+                            <input class="calc__btn number"
+                                type="button"
+                                value="7" />
+                            <input class="calc__btn number"
+                                type="button"
+                                value="8" />
+                            <input class="calc__btn number"
+                                type="button"
+                                value="9" />
+                            <input class="calc__btn operand"
+                                type="button"
+                                value="/" />
+                        </div>
+                        <div class="calc__row">
+                            <input class="calc__btn number"
+                                type="button"
+                                value="4" />
+                            <input class="calc__btn number"
+                                type="button"
+                                value="5" />
+                            <input class="calc__btn number"
+                                type="button"
+                                value="6" />
+                            <input class="calc__btn operand"
+                                type="button"
+                                value="+" />
+                        </div>
+                        <div class="calc__row">
+                            <input class="calc__btn number"
+                                type="button"
+                                value="1" />
+                            <input class="calc__btn number"
+                                type="button"
+                                value="2" />
+                            <input class="calc__btn number"
+                                type="button"
+                                value="3" />
+                            <input class="calc__btn operand"
+                                type="button"
+                                value="-" />
+                        </div>
+                        <div class="calc__row">
+                            <input class="calc__btn calc__btn__bottom__left__rounded number"
+                                type="button"
+                                value="0" />
+                            <input class="calc__btn"
+                                type="button"
+                                value="." />
+                            <input class="calc__btn calc__btn_w-50 calc__btn__bottom__right__rounded"
+                                type="button"
+                                value="="
+                                id="equals" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        created by mister ficri 🧡
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>
