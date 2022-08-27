@@ -1,107 +1,144 @@
-/**
- * Menampilkan ke output
- */
-const output = document.querySelector('#output');
-let numberToShow = '';
-let currNumber = '';
-let prevNumber = '';
-let myOperand = '';
+let prevNumber = '', calculationOperator = '', currentNumber = '';
 
-const show = () => {
-    currNumber = numberToShow;
-    output.value = formatAngka(numberToShow);
-};
+// 1. CALCULATOR SCREEN
+const calculatorScreen = document.querySelector(".calc__screen");
+const updateScreen = (number) => {
+    return calculatorScreen.value = number;
+}
 
-const justShow = (params) => {
-    params = params.toString();
-    output.value = formatAngka(params);
-    currNumber = numberToShow;
-};
+// 2. NUMBERS
+const numbers = document.querySelectorAll(".number");
+numbers.forEach( number => {
+    number.addEventListener("click", (event) => {
+        inputNumber(event.target.value);
+        updateScreen(currentNumber);
+    })
+})
+const inputNumber = (number) => {
+    return (currentNumber === '0') ? currentNumber = number : currentNumber += number;
+}
 
-/**
- * Mengambil nilai number
- */
-const numbers = document.querySelectorAll('.number');
+// 3. OPERATORS
+const operators = document.querySelectorAll(".operand");
+operators.forEach((operand) => {
+    operand.addEventListener("click", (event) => {
+        inputOperator(event.target.value);
+    })
+})
+const inputOperator = (operand) => {
+    if (currentNumber === '') {
+        return;
+    }else {
+        prevNumber = currentNumber;
+        calculationOperator = operand;
+        currentNumber = '';
+    }
+}
 
-numbers.forEach((e) => {
-    e.addEventListener('click', function () {
-        numberToShow += this.value;
-        show();
-    });
-});
-
-/**
- * Menghapus Semua angka dilayar
- */
-const clears = document.querySelector('#clears');
-
-clears.addEventListener('click', () => {
-    numberToShow = '';
-    prevNumber = '';
-    currNumber = '';
-    show(numberToShow);
-});
-
-/**
- * Operator
- */
-const operand = document.querySelectorAll('.operand');
-
-operand.forEach((e) => {
-    e.addEventListener('click', function () {
-        prevNumber = currNumber;
-        numberToShow = '';
-        myOperand = this.value;
-    });
-});
-
-const equalsTo = () => {
+// 4. EQUAL SIGN
+const equalSign = document.querySelector(".equal__sign");
+equalSign.addEventListener("click", () => {
+    updateScreen(calculate());
+    clear();
+})
+const calculate = () => {
     let result = 0;
-    switch (myOperand) {
-        case '+':
-            result = parseFloat(prevNumber) + parseFloat(currNumber);
+    switch (calculationOperator) {
+        case "+":
+            result = parseFloat(prevNumber) + parseFloat(currentNumber);
             break;
-        case '-':
-            result = parseFloat(prevNumber) - parseFloat(currNumber);
+        case "-":
+            result = parseFloat(prevNumber) - parseFloat(currentNumber);
             break;
-        case 'X':
-            result = parseFloat(prevNumber) * parseFloat(currNumber);
+        case "X":
+            result = parseFloat(prevNumber) * parseFloat(currentNumber);
             break;
-        case '/':
-            result = parseFloat(prevNumber) / parseFloat(currNumber);
+        case "/":
+            result = parseFloat(prevNumber) / parseFloat(currentNumber);
             break;
         default:
-            result = 'Error!';
+            result = ''; 
             break;
     }
-    return result;
-};
-/**
- * Equals
- */
-const equals = document.querySelector('#equals');
+    return result.toString();
+}
 
-equals.addEventListener('click', () => {
-    numberToShow = '';
-    justShow(equalsTo());
-});
 
-/**
- * Fungsi Format Rupiah
- */
-function formatAngka(angka) {
-    let number_string = angka.replace(/[^,\d]/g, '').toString(),
-        split = number_string.split(','),
-        sisa = split[0].length % 3,
-        rupiah = split[0].substr(0, sisa),
-        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+// 5. CLEAR ALL
+const allClear = document.querySelector(".all__clear");
+allClear.addEventListener("click", () => {
+    clear()
+    updateScreen(currentNumber);
+})
+const clear = () => {
+    prevNumber = '', calculationOperator = '', currentNumber = '';
+}
 
-    // tambahkan titik jika yang di input sudah menjadi angka ribuan
-    if (ribuan) {
-        separator = sisa ? ',' : '';
-        rupiah += separator + ribuan.join(',');
+// 6. DECIMAL
+const dcml = document.querySelector(".decimal");
+dcml.addEventListener("click", (event) => {
+    inputDecimal(event.target.value);
+    updateScreen(currentNumber);
+})
+const inputDecimal = (dot) => {
+    if (currentNumber === ''){
+        return;
+    } else {
+        let dotTemp = currentNumber.split('');
+        if (!dotTemp.includes(dot)) {
+            dotTemp.push(dot);
+            return currentNumber = dotTemp.join('');
+        }else{
+            const indexDecimal = [];
+            dotTemp.forEach((value, index) => {
+                if(value == '.'){
+                    return indexDecimal.push(index);
+                }
+            });
+            dotTemp.splice(indexDecimal[0], 1);
+            return currentNumber = dotTemp.join('');
+        }
+    }
+}
+
+// 7. PLUS MINUS
+const plusMinus = document.querySelector(".plus__minus__sign");
+plusMinus.addEventListener("click", () => {
+    updateScreen(toPlusOrMinus());
+})
+const toPlusOrMinus = () => {
+    if (currentNumber === '') {
+        return currentNumber;
+    } else {
+        let currentNumberArr = currentNumber.split('');
+        (currentNumberArr.includes('-')) ? currentNumberArr.shift('-') : currentNumberArr.unshift('-');
+        return currentNumber = currentNumberArr.join('');
+    }
+}
+
+// 8. PERCENT
+const percent = document.querySelector(".percent__sign");
+percent.addEventListener("click", (event) => {
+    toUpdateDisplayPercent(event.target.value);
+    updateScreen(toPercent());
+})
+
+const toUpdateDisplayPercent = (evenTargetValue) => {
+    if (currentNumber === '') {
+        return;
+    } else {
+        let currentNumberArr = currentNumber.split('');
+        (currentNumberArr.includes('%')) ? currentNumberArr.pop() : currentNumberArr.push(evenTargetValue); 
+        return currentNumber = currentNumberArr.join('');
+    }
+}
+const toPercent = () => {
+    let cn = currentNumber.split('');
+    if (prevNumber === '') {
+        cn = (cn.includes('%')) ? parseFloat(currentNumber) / 100 : cn.join();
+    } else {
+        cn = (cn.includes('%')) ? parseFloat(currentNumber) / 100 * prevNumber : cn.join();
     }
 
-    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-    return rupiah;
+    return currentNumber = cn.toString();
 }
