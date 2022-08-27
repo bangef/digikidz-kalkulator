@@ -142,3 +142,41 @@ const toPercent = () => {
 
     return currentNumber = cn.toString();
 }
+
+// 9. NOL
+const nol = document.querySelector('.nol');
+
+nol.addEventListener('click', (event) => {
+    _filterNol(event.target.value);
+    updateScreen(currentNumber);
+});
+
+const numbAndComa = [];
+numbers.forEach(element => {
+    return numbAndComa.push(element.value)
+});
+numbAndComa.push(dcml.value);
+let flag = '';
+
+const _filterNol = (eventTargetValue) => {
+    let arr = currentNumber.split('');
+    if ( arr.length == 0 ){
+        return currentNumber += eventTargetValue;
+    } else {
+        loop1 :
+        for (const a of arr) {
+            for (const b of numbAndComa){
+                if(a.includes(b) == true){
+                    flag = 'true';
+                    break loop1;
+                };
+            };
+        };
+        if(flag == 'true'){
+            return currentNumber += eventTargetValue;
+        } else{
+            flag = '';
+            return;
+        };
+    }
+};
